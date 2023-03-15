@@ -1,17 +1,9 @@
 
 node {
     def server
-
     def rtMaven = Artifactory.newMavenBuild()
-
     def buildInfo
-    // dummy comment
-
-    
-
-
     stage ('Artifactory configuration') {
-
         server = Artifactory.server 'JFROGTST'
         rtMaven.tool = 'Maven3'
         rtMaven.deployer releaseRepo: 'my-libs-release-local', snapshotRepo: 'my-libs-snapshot-local', server: server
@@ -19,19 +11,19 @@ node {
         buildInfo = Artifactory.newBuildInfo()
     }
     stage('Fetch') {
-        git credentialsId: 'GITHUB', url: 'https://github.com/yuriskltc/simple-java-maven-app.git'
+         git credentialsId: 'GITHUB', url: 'https://github.com/yuriskltc/simple-java-maven-app.git'
     }
     stage('Test') {
          rtMaven.run pom: 'pom.xml', goals: '-DmavenLocalRepo="" -DmavenSettingsFilePath="" -Dv=${BUILD_NUMBER} test -U '
     }
     stage('Build') {
-          rtMaven.run pom: 'pom.xml', goals: '-DmavenLocalRepo="" -DmavenSettingsFilePath="" -Dv=${BUILD_NUMBER} clean package -U ', buildInfo: buildInfo
+         rtMaven.run pom: 'pom.xml', goals: '-DmavenLocalRepo="" -DmavenSettingsFilePath="" -Dv=${BUILD_NUMBER} clean package -U ', buildInfo: buildInfo
     }
    
     stage ('Deploy') {
-            rtMaven.deployer.deployArtifacts buildInfo
+         rtMaven.deployer.deployArtifacts buildInfo
     }
     stage ('Publish build info') {
-            server.publishBuildInfo buildInfo
+         server.publishBuildInfo buildInfo
     }
 }
