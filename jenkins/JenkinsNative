@@ -17,7 +17,7 @@ pipeline  {
         }
         stage('Fetch') {
             steps {
-                git credentialsId: 'GITHUB', url: 'https://github.com/yuriskltc/simple-java-maven-app.git'
+                git credentialsId: 'GITHUB', url: 'https://github.com/yuriskltc/hello-world-demonstration.git'
             }
         }
         
@@ -46,7 +46,7 @@ pipeline  {
             }         
             steps{                               
                 script{
-                    sh 'cp pom.xml target/my-app-1.1.${BUILD_NUMBER}-SNAPSHOT.pom'
+                    sh 'cp pom.xml target/hello-world-1.1.${BUILD_NUMBER}-SNAPSHOT.pom'
                     def buildInfo = Artifactory.newBuildInfo()
                     buildInfo.env.collect()
                     server.upload spec: uploadSpec, buildInfo: buildInfo
