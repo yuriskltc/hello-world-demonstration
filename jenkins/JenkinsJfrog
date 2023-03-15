@@ -11,7 +11,7 @@ node {
         buildInfo = Artifactory.newBuildInfo()
     }
     stage('Fetch') {
-         git credentialsId: 'GITHUB', url: 'https://github.com/yuriskltc/simple-java-maven-app.git'
+         git credentialsId: 'GITHUB', url: 'https://github.com/yuriskltc/hello-world-demonstration.git'
     }
     stage('Test') {
          rtMaven.run pom: 'pom.xml', goals: '-DmavenLocalRepo="" -DmavenSettingsFilePath="" -Dv=${BUILD_NUMBER} test -U '
